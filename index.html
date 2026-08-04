@@ -1441,6 +1441,22 @@
     // paa en lokal fil) - saa fyrer eventet aldrig igen. Tjek readyState og vis med det samme.
     if (trailer.readyState >= 1) visTrailer();
     trailer.addEventListener('error', () => { if (!trailerVist) trailer.hidden = true; });
+    // Nogle telefoner (fx iOS Low Power Mode) blokerer autoplay HELT - traileren staar saa
+    // frossen paa sin poster, fordi IntersectionObserver-play ikke er en "rigtig" brugerhandling.
+    // Ved FOERSTE beroering "unlocker" vi traileren (play -> evt. pause igen), saa observerens
+    // afspilning virker naar man naar ned til den. Er den allerede i view, spiller den bare.
+    let trailerLaast = true;
+    addEventListener('touchstart', () => {
+      if (trailer.hidden) return;
+      const r = trailer.getBoundingClientRect();
+      const iView = r.bottom > innerHeight * 0.35 && r.top < innerHeight * 0.65;
+      if (trailerLaast) {
+        trailerLaast = false;
+        trailer.play().then(() => { if (!iView) trailer.pause(); }).catch(() => {});
+      } else if (iView && trailer.paused) {
+        trailer.play().catch(() => {});
+      }
+    }, { passive: true });
 
     // Brand-marquee: ren CSS-animation. JS duplikerer bare indholdet én gang, saa
     // translateX(-50%) looper soemloest. (scrollLeft-varianten scrollede ikke paa mobil.)
