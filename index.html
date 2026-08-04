@@ -315,16 +315,9 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.15;
-      margin: 0 auto 0.55rem;
-    }
-    .data-statement .accent { color: var(--blaa-tekst); }
-    /* Lille afklarende linje under "Hvorfor Roblox?" (fx aldersfordeling) */
-    .data-statement-under {
-      text-align: center;
-      color: var(--graa);
-      font-size: clamp(0.9rem, 1.6vw, 1.1rem);
       margin: 0 auto clamp(1.8rem, 4.5vh, 3rem);
     }
+    .data-statement .accent { color: var(--blaa-tekst); }
     /* Reveal der glider NED paa plads (statement "rykker med ned" og bliver titel) */
     .reveal-ned { opacity: 0; transform: translateY(-20px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
     .reveal-ned.synlig { opacity: 1; transform: none; }
@@ -882,7 +875,6 @@
       <div class="data-blok">
         <!-- "Hvorfor Roblox?" er centreret titel over de 4 bokse (beviserne). Glider ned paa plads. -->
         <h2 class="data-statement reveal-ned">Hvorfor Roblox?</h2>
-        <p class="data-statement-under reveal-ned">Størstedelen er over 13 år</p>
         <div class="duel">
           <div class="duel-side vinder">
             <div class="duel-tal">11+ min</div>
@@ -933,7 +925,7 @@
         <p class="sektion-etiket">Vores case</p>
         <img class="case-logo" src="case/faarup-logo.png" alt="Fårup Sommerland" onerror="this.style.display='none'">
         <h2 class="sektion-titel enlinje">Fårup Sommerland</h2>
-        <p class="sektion-tekst enlinje">Danmarks bedste forlystelsespark, genskabt som Roblox-oplevelse. Fra koncept til lancering.</p>
+        <p class="sektion-tekst enlinje">Danmarks bedste forlystelsespark, genskabt som Roblox-oplevelse.</p>
       </div>
 
       <!-- Trailer: case/trailer.mp4 (9:16) - autoplay uden lyd naar den scrolles ind -->
@@ -950,12 +942,12 @@
           <div class="reveal">
             <p class="case-stat-label">Visits</p>
             <div class="case-tal" data-taeller="500000" data-suffix="+">500.000+</div>
-            <p class="case-beskrivelse">Over <strong>500.000 besøg</strong> i spillet. Ikke visninger, ikke scroll-forbi - besøg, hvor spillere selv valgte at bruge tid i Fårups univers.</p>
+            <p class="case-beskrivelse">Over <strong>500.000 besøg</strong> i spillet.</p>
           </div>
           <div class="reveal">
             <p class="case-stat-label">Gennemsnitlig tid</p>
             <div class="case-tal groen">9+ min</div>
-            <p class="case-beskrivelse">Per besøg i gennemsnit. <strong>Testet af på det danske marked.</strong> En oplevelse brugeren husker, i stedet for endnu en reklame.</p>
+            <p class="case-beskrivelse">Per besøg i gennemsnit.</p>
           </div>
           <div class="reveal">
             <p class="case-stat-label">Virtuel merch</p>
@@ -998,7 +990,7 @@
     <div class="inner">
       <div class="ydelser-hoved reveal">
         <h2 class="sektion-titel">Det leverer vi</h2>
-        <p class="sektion-tekst enlinje">Fra idé til lancering - vi håndterer hele processen, så I kan fokusere på jeres brand.</p>
+        <p class="sektion-tekst enlinje">Fra idé til lancering - vi håndterer hele processen.</p>
       </div>
 
       <div class="levering reveal">
