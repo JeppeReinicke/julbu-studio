@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Julbu Studio - Roblox-spil og UGC for danske brands</title>
+  <meta name="description" content="Julbu Studio er et dansk gaming-studie. Vi bygger Roblox-spil og UGC, der bringer brands ind hos Gen Z og Gen Alpha.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Julbu Studio - Roblox-spil og UGC for danske brands">
+  <meta property="og:description" content="Dansk gaming-studie. Vi bygger Roblox-spil og UGC, der bringer brands ind hos Gen Z og Gen Alpha.">
+  <meta property="og:url" content="https://julbustudio.com/">
+  <meta property="og:image" content="https://julbustudio.com/hero/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon-256.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <!-- Start altid i toppen (browseren skal ikke gendanne scroll-position ved refresh) -->
+  <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
+  <style>
+    /* Farver og fonte: se style-config.json (autoritativ kilde) */
+    :root {
+      --sort: #0A0A0B;
+      --sort-elevated: #121214;
+      --border: #232326;
+      --hvid: #F5F5F7;
+      --graa: #9C9CA6;
+      --graa-lys: #D6D6DD;
+      --blaa: #3B569D;
+      --blaa-tekst: #7B93D6;
+      --groen: #5FBE8C;
+      --roed: #E8756C;
+      --font: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --pad: clamp(1.25rem, 5vw, 5rem);
+      --maxw: 1400px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+    /* Store skaerme: skaler HELE siden op (root font-size -> alle rem/clamp-maxes vokser) + bredere
+       indhold, saa den ikke bare staar smalt i midten med tom plads. Samme format, bare stoerre. */
+    @media (min-width: 1600px) { :root { font-size: 18px;  --maxw: 1660px; } }
+    @media (min-width: 2000px) { :root { font-size: 20px;  --maxw: 1880px; } }
+    @media (min-width: 2500px) { :root { font-size: 22px;  --maxw: 2120px; } }
+
+    body {
+      font-family: var(--font);
+      background: var(--sort);
+      color: var(--hvid);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--blaa); color: var(--hvid); }
+
+    a { color: inherit; text-decoration: none; }
+
+    .inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding-left: var(--pad);
+      padding-right: var(--pad);
+    }
+
+    /* ---------- NAV ---------- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      /* Minimal topbar: skub logo helt til venstre og kontakt/tema helt til hoejre (lille padding),
+         saa den fylder mindst muligt og aldrig daekker vigtigt indhold i kanterne. */
+      padding: 0.7rem clamp(0.9rem, 2vw, 1.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(10, 10, 11, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom-color: var(--border);
+    }
+    .nav-navn { display: flex; align-items: center; }
+    .nav-navn img { height: 24px; width: auto; display: block; }
+    /* Logo-variant pr. tilstand: moerk (hvidt logo) som standard, lys (moerkt logo) naar html.lys.
+       Hoej specificitet saa den slaar .nav-navn img / .hvem-logo img */
+    .nav-navn .logo-lys, .hvem-logo .logo-lys { display: none; }
+    html.lys .nav-navn .logo-moerk { display: none; }
+    html.lys .nav-navn .logo-lys { display: block; }
+    html.lys .hvem-logo .logo-moerk { display: none; }
+    html.lys .hvem-logo .logo-lys { display: inline-block; }
+    .nav-kontakt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--blaa);
+      border: 1px solid var(--blaa);
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .nav-kontakt svg { width: 1.05em; height: 1.05em; }
+    .nav-kontakt:hover { background: var(--blaa-tekst); border-color: var(--blaa-tekst); }
+    .nav-hoejre { display: flex; align-items: center; gap: 0.7rem; }
+    .nav-linkedin { display: inline-flex; color: var(--graa); transition: color 0.2s; }
+    .nav-linkedin:hover { color: var(--blaa-tekst); }
+    .nav-linkedin svg { width: 20px; height: 20px; fill: currentColor; }
+    /* Raekkefoelge i nav-hoejre: Kontakt (venstre) - Night Mode (midt) - LinkedIn (helt til hoejre) */
+    .nav-hoejre .nav-kontakt { order: 1; }
+    .nav-hoejre .nav-tema { order: 2; }
+    .nav-hoejre .nav-linkedin { order: 3; }
+    /* Nattilstand-kontakt: maane-ikon i en on/off-switch. aktiv = moerk (nat er taendt) */
+    .nav-tema {
+      position: relative;
+      width: 54px;
+      height: 28px;
+      padding: 0;
+      background: var(--sort-elevated);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+    .nav-tema:hover { border-color: var(--graa); }
+    .nav-tema .knop {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--hvid);
+      color: var(--sort);
+      display: grid;
+      place-items: center;
+      transition: transform 0.32s var(--ease), background 0.3s, color 0.3s;
+    }
+    .nav-tema .knop svg { width: 13px; height: 13px; fill: currentColor; }
+    .nav-tema.aktiv { background: var(--blaa); border-color: var(--blaa); }
+    .nav-tema.aktiv .knop { transform: translateX(26px); }
+    /* Nav er skjult mens hero-animationen koerer - kommer ind naar man er igennem */
+    nav { transition: opacity 0.5s ease; }
+    nav.nav-skjult { opacity: 0; pointer-events: none; }
+
+    /* ---------- LYS TILSTAND (knappen i hoejre hjoerne) ---------- */
+    html.lys {
+      --sort: #E9EFF7;
+      --sort-elevated: #DDE6F2;
+      --border: #C3D0E2;
+      --hvid: #131C2B;
+      --graa: #74849C;
+      --graa-lys: #46586F;
+      --blaa: #3B569D;
+      --blaa-tekst: #3563C4;
+      --groen: #2E9E5B;
+      --roed: #C8483E;
+    }
+    html.lys nav.scrolled { background: rgba(233, 239, 247, 0.85); }
+
+    /* ---------- HERO ---------- */
+    /* #hero-world: scroll-world scrub-engine mountes her, naar Higgsfield-assets er klar.
+       Indtil da: rolig cinematic placeholder. */
+    /* Scroll-scrubbet hero: hoej container + sticky stage, scroll driver videoens tid */
+    .hero {
+      height: 244vh; /* desktop scrub-hoejde. Scrollbar straekning = 244-100 = 144vh (~20% langsommere scrub end de gamle 215vh). Mobil overstyres til 220vh laengere nede. */
+      position: relative;
+    }
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100dvh;
+      overflow: hidden;
+    }
+    #hero-world { position: absolute; inset: 0; background: var(--sort-elevated); }
+    .hero-poster,
+    #hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #hero-video { opacity: 0; transition: opacity 0.35s ease; }
+    #hero-video.klar { opacity: 1; }
+    .hero-fade {
+      position: absolute;
+      inset: 0;
+      background: var(--sort);
+      opacity: 0;
+      pointer-events: none;
+    }
+    /* STATEMENT-SEKTION (v5): egen laast fuldskaerm efter hero */
+    .statement-sektion {
+      background: var(--sort);
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(4rem, 10vh, 8rem) 0;
+      border-top: 1px solid var(--border);
+    }
+    .statement-sektion .accent { color: var(--blaa-tekst); }
+    /* Diskret perspektiv-gitter - hint om spilverden, forsvinder naar video kommer */
+    .hero-gitter {
+      display: none;
+      position: absolute;
+      left: 50%; bottom: -12%;
+      width: 190%; height: 62%;
+      transform: translateX(-50%) perspective(620px) rotateX(64deg);
+      transform-origin: center bottom;
+      background-image:
+        linear-gradient(rgba(123,147,214,0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(123,147,214,0.09) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(ellipse 62% 88% at 50% 100%, #000 32%, transparent 78%);
+      mask-image: radial-gradient(ellipse 62% 88% at 50% 100%, #000 32%, transparent 78%);
+    }
+    .hero-scrollhint {
+      position: absolute;
+      left: calc(100% - var(--pad));
+      bottom: clamp(3.5rem, 9vh, 7rem);
+      transform: translateX(-100%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--graa);
+      transition: left 0.9s var(--ease), bottom 0.9s var(--ease),
+                  transform 0.9s var(--ease), font-size 0.9s var(--ease),
+                  gap 0.9s var(--ease), color 0.7s ease, opacity 0.4s ease;
+    }
+    /* Efter 2 sek glider hintet ind i midten, vokser og bliver blaat - saa 40+ forstaar at der skal scrolles */
+    .hero-scrollhint.stor {
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: clamp(2.4rem, 6vh, 4.5rem);
+      gap: 0.3rem;
+      color: var(--hvid);
+    }
+    .hint-tekst {
+      transition: font-size 0.9s var(--ease), color 0.6s ease, letter-spacing 0.9s var(--ease);
+    }
+    /* Stor tilstand: teksten bliver overskrift-stor og blaa - ingen boks */
+    .hero-scrollhint.stor .hint-tekst {
+      font-size: clamp(2.3rem, 4.8vw, 3.2rem); /* ~50% stoerre - skal vaere TYDELIG (ogsaa for 40+) */
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--hvid);
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+    }
+    /* Mus-ikon (samme som "Det leverer vi"-cue'et) - lille i hoejre hjoerne, stor naar centreret. Bobber ned. */
+    .hint-mus {
+      width: 20px;
+      height: auto;
+      order: -1; /* mus over teksten */
+      animation: musbob 1.7s var(--ease) infinite;
+      transition: width 0.9s var(--ease);
+    }
+    .hero-scrollhint.stor .hint-mus { width: 60px; filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.6)); }
+    @keyframes musbob {
+      0%, 100% { transform: translateY(0);   opacity: 0.7; }
+      50%      { transform: translateY(6px); opacity: 1; }
+    }
+
+    /* ---------- STATEMENT (overlay i hero - staar der i sekundet videoen fader) ---------- */
+    .hero-statement {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 var(--pad);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .statement-tekst {
+      font-size: clamp(1.4rem, 2.55vw, 2.7rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    @media (max-width: 860px) {
+      .statement-tekst { white-space: normal; font-size: clamp(1.7rem, 6.4vw, 2.4rem); }
+    }
+    .statement-tekst .ord { color: var(--border); transition: color 0.35s var(--ease); }
+    .statement-tekst .ord.synlig { color: var(--hvid); }
+    .statement-tekst .ord.accent.synlig { color: var(--blaa-tekst); }
+
+    /* ---------- DATA ---------- */
+    .data { padding-top: clamp(4rem, 9vh, 6rem); padding-bottom: clamp(6rem, 14vh, 10rem); border-top: 1px solid var(--border); }
+    /* Sektioner snapper blidt paa plads naar man lander taet paa dem */
+    .data-blok, .case, .verden, .hvem, .ydelser, .cta { scroll-snap-align: start; }
+    /* "Hvorfor Roblox?" - centreret titel over de 4 bokse */
+    .data-statement {
+      text-align: center;
+      font-size: clamp(1.9rem, 3.6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin: 0 auto 0.55rem;
+    }
+    .data-statement .accent { color: var(--blaa-tekst); }
+    /* Lille afklarende linje under "Hvorfor Roblox?" (fx aldersfordeling) */
+    .data-statement-under {
+      text-align: center;
+      color: var(--graa);
+      font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+      margin: 0 auto clamp(1.8rem, 4.5vh, 3rem);
+    }
+    /* Reveal der glider NED paa plads (statement "rykker med ned" og bliver titel) */
+    .reveal-ned { opacity: 0; transform: translateY(-20px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+    .reveal-ned.synlig { opacity: 1; transform: none; }
+    /* FARVEDE BOKSE (v5): top-raekken solid BLAA (det foerste man ser), bund moerk navy.
+       Fast lys tekst - kortene er altid moerke/blaa, saa det virker i baade moerk og lys tilstand.
+       (v6 er den af-boksede variant - ren typografi uden kort.) */
+    .duel-side, .datarap-felt {
+      background: #10131f;
+      border: 1px solid rgba(123, 147, 214, 0.16);
+      border-radius: 18px;
+      padding: clamp(1.6rem, 3.4vw, 2.6rem);
+    }
+    .duel-side { background: var(--blaa); border-color: rgba(255, 255, 255, 0.16); }
+    .duel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(0.9rem, 2vw, 1.4rem);
+    }
+    .duel-tal {
+      font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .duel-side.vinder .duel-tal { color: #fff; }
+    .duel-side.taber .duel-tal { color: rgba(255, 255, 255, 0.6); }
+    /* Markering i labels: Roblox = groen (positivt), SoMe-reklame = roed (negativt) - fast paa blaat kort */
+    .mark-pos { color: #6FE3AC; font-weight: 600; }
+    .mark-neg { color: #FF9D95; font-weight: 600; }
+    .duel-label {
+      margin-top: 0.9rem;
+      font-size: 1.26rem; /* ~33% stoerre - var lidt for lille at laese */
+      color: rgba(255, 255, 255, 0.88);
+      white-space: nowrap;
+    }
+    .duel-kilde { color: var(--graa); font-size: 0.8rem; margin-top: 0.35rem; }
+    .datarap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(0.9rem, 2vw, 1.4rem);
+      margin-top: clamp(0.9rem, 2vw, 1.4rem);
+    }
+    .datarap-felt {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .datarap-tal {
+      font-size: clamp(2rem, 4.4vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+    }
+    .datarap-label { font-size: 0.92rem; color: rgba(255, 255, 255, 0.62); }
+    .datarap-label strong { color: #fff; font-weight: 700; } /* highlight paa Globalt / Danmark */
+
+    /* POP-UP (v7): de 4 bokse kommer smooth ind fra hver deres hjoerne naar data-blokken ses.
+       Hurtigt + ikke distraherende (maalgruppe 40+). */
+    .duel-side, .datarap-felt {
+      opacity: 0;
+      transition: opacity 0.67s var(--ease), transform 0.67s var(--ease); /* 33% langsommere - man skal kunne naa at se det */
+      will-change: transform, opacity;
+    }
+    .duel-side.vinder            { transform: translate(-36px, -30px) scale(0.95); }  /* top-venstre */
+    .duel-side.taber             { transform: translate(36px, -30px) scale(0.95); }   /* top-hoejre */
+    .datarap-felt:nth-child(1)   { transform: translate(-36px, 30px) scale(0.95); }   /* bund-venstre */
+    .datarap-felt:nth-child(2)   { transform: translate(36px, 30px) scale(0.95); }    /* bund-hoejre */
+    .data-blok.pop-vis .duel-side,
+    .data-blok.pop-vis .datarap-felt { opacity: 1; transform: none; }
+    .data-blok.pop-vis .duel-side.taber           { transition-delay: 0.08s; }
+    .data-blok.pop-vis .datarap-felt:nth-child(1) { transition-delay: 0.16s; }
+    .data-blok.pop-vis .datarap-felt:nth-child(2) { transition-delay: 0.24s; }
+    @media (prefers-reduced-motion: reduce) {
+      .duel-side, .datarap-felt { opacity: 1 !important; transform: none !important; transition: none; }
+    }
+
+    /* Danske tal (DR, NIMBI & Medieraadet 2026 - SKAL gennemtjekkes af Jeppe & Frede foer launch) */
+    .dkdata-overskrift {
+      margin-top: clamp(3.5rem, 8vh, 5.5rem);
+      font-size: clamp(1.4rem, 2.6vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .dkdata {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(1.5rem, 4vw, 3.5rem);
+      margin-top: 1.6rem;
+    }
+    .dkdata-felt { padding: 1.8rem 0 0.5rem; }
+    .dkdata-tal {
+      font-size: clamp(2.6rem, 5.4vw, 4.6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .dkdata-felt:nth-child(1) .dkdata-tal { color: var(--blaa-tekst); }
+    .dkdata-felt:nth-child(2) .dkdata-tal { color: var(--groen); }
+    .dkdata-label { margin-top: 0.8rem; font-size: 0.95rem; color: var(--graa-lys); max-width: none; }
+    .dkdata-label strong { color: var(--hvid); font-weight: 700; }
+    .dkdata-kilde { margin-top: 1.8rem; font-size: 0.8rem; color: var(--graa); }
+    @media (max-width: 860px) {
+      /* Mobil: behold 3 kolonner men skaler ned, saa det er samme layout - bare mindre */
+      .dkdata { gap: clamp(0.7rem, 3vw, 1.4rem); margin-top: 1.1rem; }
+      .dkdata-tal { font-size: clamp(1.9rem, 11vw, 2.8rem); }
+      .dkdata-label { font-size: 0.8rem; margin-top: 0.5rem; }
+    }
+
+    /* ---------- SEKTIONS-HOVED (genbrug) ---------- */
+    .sektion-hoved {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(1.5rem, 4vw, 4rem);
+      align-items: end;
+      margin-bottom: clamp(3rem, 7vh, 5rem);
+    }
+    .eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--graa);
+    }
+    .sektion-titel {
+      margin-top: 0.9rem;
+      font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+    }
+    .sektion-tekst {
+      font-size: 1.05rem;
+      color: var(--graa-lys);
+      max-width: 52ch;
+    }
+
+    /* ---------- CASE ---------- */
+    .case {
+      padding: clamp(6rem, 14vh, 10rem) 0;
+      border-top: 1px solid var(--border);
+    }
+    .case-hoved { margin-bottom: clamp(3rem, 7vh, 5rem); }
+    .sektion-etiket {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blaa-tekst);
+      margin-bottom: 1.1rem;
+    }
+    .case-logo { height: clamp(54px, 7vw, 84px); width: auto; display: block; margin-bottom: 1.2rem; }
+    .sektion-titel.enlinje {
+      white-space: nowrap;
+      font-size: clamp(2rem, 5.6vw, 3.6rem);
+    }
+    .sektion-titel.stor { font-size: clamp(2.4rem, 6.6vw, 4.6rem); letter-spacing: -0.04em; }
+    .sektion-tekst.enlinje { max-width: none; } /* én linje på desktop, wrapper naturligt på mobil */
+    .case-hoved .sektion-tekst { margin-top: 1.1rem; }
+    .case-medie {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: center;
+    }
+    .case-video {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      max-height: 82vh;
+      width: 100%;
+      max-width: 420px;
+      background: var(--sort-elevated);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .case-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .case-video .placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      color: var(--graa);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 2rem;
+    }
+    .placeholder-mark {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+    }
+    .case-fakta { display: flex; flex-direction: column; gap: clamp(1.5rem, 3.2vh, 2.4rem); }
+    .case-stat-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--hvid);
+      margin-bottom: 0.4rem;
+    }
+    .case-tal {
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: var(--blaa-tekst);
+    }
+    .case-tal.groen { color: var(--groen); }
+    .case-tal.hvid { color: var(--hvid); }
+    .case-beskrivelse { margin-top: 0.7rem; font-size: 0.95rem; color: var(--graa); max-width: 44ch; }
+    .case-beskrivelse strong { color: var(--hvid); font-weight: 600; }
+
+    /* ---------- INTERNATIONALT ---------- */
+    .verden .sektion-hoved { display: block; }
+    .verden .sektion-tekst { margin-top: 1.1rem; }
+    .verden {
+      padding: clamp(6rem, 14vh, 10rem) 0;
+      border-top: 1px solid var(--border);
+    }
+    .verden .sektion-hoved { margin-bottom: clamp(3.5rem, 8vh, 6rem); }
+    /* Brand-marquee som én tydelig ticker-baand: hairline top+bund, spaender fuld bredde.
+       Loeser rode-problemet hvor flere vandrette linjer stablede sig omkring sektionen. */
+    .brandbaand {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--sort-elevated);
+    }
+    /* Ren CSS-transform-marquee: virker bulletproof paa mobil (scrollLeft-varianten gjorde ikke).
+       Indholdet duplikeres én gang i JS, saa translateX(-50%) giver et soemloest loop. */
+    .brandspor {
+      display: flex;
+      align-items: center;
+      gap: clamp(2.2rem, 5vw, 4.5rem);
+      width: max-content;
+      padding: clamp(1.6rem, 4vh, 2.4rem) var(--pad);
+      animation: marquee 42s linear infinite;
+      will-change: transform;
+    }
+    .brandbaand:hover .brandspor { animation-play-state: paused; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .brandspor { user-select: none; -webkit-user-select: none; }
+    .brandspor span {
+      font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--blaa-tekst);
+      white-space: nowrap;
+      transition: color 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .brandspor span:hover { color: var(--hvid); transform: scale(1.14); }
+    /* Lille afklaring: vi samarbejder ikke med disse brands - de er blot eksempler paa aktivitet paa platformen. */
+    .brand-note {
+      text-align: center;
+      color: var(--graa);
+      font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+      letter-spacing: 0.01em;
+      margin-top: clamp(1rem, 2.4vh, 1.6rem);
+    }
+
+    /* ---------- HVEM ER VI ---------- */
+    .hvem {
+      padding: clamp(7rem, 18vh, 13rem) 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .hvem-logo { margin: 0 0 3rem; line-height: 0; }
+    .hvem-logo img {
+      height: clamp(160px, 24vw, 300px);
+      width: auto;
+      max-width: 100%;
+      display: inline-block;
+    }
+    .hvem-tekst {
+      font-size: clamp(1.7rem, 3.6vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.22;
+      max-width: 24ch;
+      margin: 0 auto;
+    }
+    .hvem-tekst em { font-style: normal; color: var(--blaa-tekst); }
+
+    /* ---------- YDELSER ---------- */
+    .ydelser {
+      padding: clamp(6rem, 14vh, 10rem) 0;
+      border-top: 1px solid var(--border);
+    }
+    /* "Det leverer vi"-hoved: stor, centreret titel + én centreret linje under */
+    .ydelser-hoved { text-align: center; margin-bottom: clamp(3.5rem, 8vh, 5.5rem); }
+    .ydelser-hoved .sektion-titel { margin-top: 0; font-size: clamp(2.8rem, 7.5vw, 5.2rem); letter-spacing: -0.04em; }
+    .ydelser-hoved .sektion-tekst { max-width: none; margin: 1.3rem auto 0; }
+    /* TEN-4-stil: stor liste, hover lyser blaat op og rykker sig, panel til hoejre skifter */
+    .levering { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); }
+    .levering-liste { display: flex; flex-direction: column; }
+    .levering-punkt {
+      appearance: none;
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: clamp(1.2rem, 2.8vh, 1.9rem) 0;
+      font-family: var(--font);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+      line-height: 1.05;
+      color: var(--graa);
+      cursor: pointer;
+      transition: color 0.3s var(--ease), transform 0.35s var(--ease);
+    }
+    .levering-punkt:hover, .levering-punkt.aktiv { color: var(--blaa-tekst); transform: translateX(12px); }
+    .levering-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem clamp(1rem, 2.5vw, 2.5rem);
+    }
+    .levering-titel { font-size: clamp(1.5rem, 2.8vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; }
+    .levering-tekst { margin-top: 1rem; color: var(--graa); font-size: 1rem; max-width: 44ch; margin-left: auto; margin-right: auto; }
+    .levering-mobil { display: none; }
+    /* Cue: viser at listen er interaktiv (hold/klik) - forsvinder ved foerste interaktion */
+    .levering-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.4rem;
+      color: var(--blaa-tekst);
+      font-size: 1.28rem; /* 50% stoerre - forsvinder alligevel ved hover */
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      animation: cuefloat 2.6s var(--ease) infinite;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .levering-cue svg { width: 28px; height: 28px; }
+    .levering-cue.vaek { opacity: 0; transform: translateY(-8px); pointer-events: none; animation: none; }
+    @keyframes cuefloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* ---------- CTA ---------- */
+    .cta {
+      padding: clamp(7rem, 18vh, 13rem) 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-titel {
+      font-size: clamp(2rem, 4.2vw, 3.4rem); /* var for lille ift. de andre sektioner - nu paa niveau */
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .cta-knap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2.4rem;
+      padding: 1.5rem 3.6rem; /* ca. dobbelt saa stor - staerk call to action */
+      border-radius: 100px;
+      background: var(--blaa);
+      color: #fff;
+      font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      transition: background 0.25s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s ease;
+    }
+    .cta-knap:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59, 86, 157, 0.45); }
+    .cta-knap:hover { background: var(--blaa-tekst); }
+    .cta-knap svg { width: 1.1em; height: 1.1em; }
+    .cta-mail-note { margin-top: 1.3rem; font-size: 0.95rem; color: var(--graa); display: flex; align-items: center; justify-content: center; gap: 0.7rem; }
+    .cta-linkedin { display: inline-flex; color: var(--graa); transition: color 0.25s; }
+    .cta-linkedin:hover { color: var(--blaa-tekst); }
+    .cta-linkedin svg { width: 18px; height: 18px; fill: currentColor; }
+    /* Founder-kort (kontakt): to runde profilbilleder + navn/titel/mail/tlf/linkedin */
+    .foundere { display: flex; justify-content: center; gap: clamp(2.5rem, 8vw, 6rem); margin-top: clamp(3rem, 7vh, 5rem); flex-wrap: wrap; }
+    .fkort { display: flex; flex-direction: column; align-items: center; max-width: 300px; }
+    .ffoto { width: 172px; height: 172px; border-radius: 50%; object-fit: cover; object-position: center 22%; background: var(--sort-elevated); border: 1px solid var(--border); }
+    .fkort:nth-child(1) .ffoto { object-position: center 30%; } /* Jeppe - ansigtet lidt hoejere i rammen */
+    .fnavn { font-weight: 700; font-size: 1.65rem; letter-spacing: -0.02em; margin-top: 1.3rem; color: var(--hvid); }
+    .ftitel { color: var(--blaa-tekst); font-size: 1.05rem; font-weight: 500; margin-top: 0.25rem; }
+    .fkontakt { margin-top: 0.9rem; font-size: 1.1rem; color: var(--graa-lys); text-align: center; }
+    .fkontakt a { color: var(--graa-lys); transition: color 0.2s; }
+    .fkontakt a:hover { color: var(--hvid); }
+    .ftlf { color: var(--graa); display: block; margin-top: 0.15rem; }
+    .flinkedin { display: inline-flex; margin-top: 1.05rem; color: var(--graa); transition: color 0.25s; }
+    .flinkedin:hover { color: var(--blaa-tekst); }
+    .flinkedin svg { width: 26px; height: 26px; fill: currentColor; }
+    /* Kontakt-knap (button-reset paa cta-knap) + luft over */
+    .cta-knap { appearance: none; border: none; font-family: var(--font); cursor: pointer; margin-top: clamp(2.5rem, 6vh, 4rem); }
+    /* Kontakt-MODAL (pop-up mail-form) - BLAA boks der folder sig ud fra knappen */
+    .modal-baggrund { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s var(--ease); }
+    .modal-baggrund[hidden] { display: none; } /* KRITISK: ellers daekker overlayet siden usynligt og blokerer ALLE klik */
+    .modal-baggrund.aaben { opacity: 1; }
+    .modal { position: relative; width: 100%; max-width: 480px; background: var(--blaa); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 22px; padding: clamp(1.8rem, 4vw, 2.6rem); transform: scale(0.85) translateY(26px); transform-origin: center bottom; opacity: 0; transition: transform 0.5s var(--ease), opacity 0.35s ease; }
+    .modal-baggrund.aaben .modal { transform: none; opacity: 1; }
+    .modal-luk { position: absolute; top: 0.9rem; right: 1.1rem; background: none; border: none; color: rgba(255, 255, 255, 0.7); font-size: 1.9rem; line-height: 1; cursor: pointer; transition: color 0.2s; }
+    .modal-luk:hover { color: #fff; }
+    .modal-titel { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+    .modal-under { color: rgba(255, 255, 255, 0.78); font-size: 0.95rem; margin-top: 0.4rem; margin-bottom: 1.5rem; }
+    #kontakt-form { display: flex; flex-direction: column; gap: 1rem; }
+    .felt { display: flex; flex-direction: column; gap: 0.4rem; }
+    .felt span { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); font-weight: 600; }
+    .felt input, .felt textarea { font-family: var(--font); font-size: 1rem; color: #fff; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 10px; padding: 0.75rem 0.9rem; transition: border-color 0.2s, background 0.2s; resize: vertical; }
+    .felt input::placeholder, .felt textarea::placeholder { color: rgba(255, 255, 255, 0.55); }
+    .felt input:focus, .felt textarea:focus { outline: none; border-color: #fff; background: rgba(255, 255, 255, 0.2); }
+    .modal-send { margin-top: 0.5rem; appearance: none; border: none; font-family: var(--font); font-size: 1.05rem; font-weight: 700; color: var(--blaa); background: #fff; border-radius: 100px; padding: 0.85rem; cursor: pointer; transition: transform 0.2s var(--ease), box-shadow 0.2s ease; }
+    .modal-send:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(255, 255, 255, 0.3); } /* lyser op / loefter sig */
+    .modal-send:disabled { opacity: 0.6; cursor: default; }
+    .modal-status { font-size: 0.9rem; color: rgba(255, 255, 255, 0.9); text-align: center; min-height: 1.2em; margin: 0; }
+    .hp { position: absolute; left: -9999px; width: 0; height: 0; opacity: 0; }
+
+    /* ---------- REVEAL ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    }
+    .reveal.synlig { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-ned { opacity: 1; transform: none; transition: none; }
+      .hint-mus { animation: none; }
+      .levering-cue { animation: none; }
+      .brandspor { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* V5 LÅST SCROLL (desktop): hero scrubbes frit, men ALT efter hero er 100vh-sektioner
+       der laaser én-pr-scroll (scroll-snap-stop). scroll-snap-type slaas foerst til
+       "mandatory" af JS naar man er forbi hero, saa scrub'en ikke bliver kapret. */
+    @media (min-width: 861px) {
+      /* Fast stop paa det faerdig-farvede statement: hero'ens SLUT er et snap-punkt.
+         Man scrubber frit igennem (snap=none indtil p=1), lander/holder paa statementet,
+         og kan scrolle tilbage til det i stedet for helt op til starten. */
+      .hero { scroll-snap-align: end; scroll-snap-stop: always; }
+      .data { padding: 0; }
+      .data-blok {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        scroll-snap-stop: always;
+      }
+      .dkdata-overskrift { margin-top: 0; }
+      .case { padding: 0; min-height: 100vh; scroll-snap-stop: always; }
+      .case .inner {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: clamp(4rem, 9vh, 6rem);
+        padding-bottom: clamp(4rem, 9vh, 6rem);
+      }
+      .case-hoved { margin-bottom: clamp(1.2rem, 3vh, 2rem); }
+      .case-hoved .sektion-tekst { white-space: nowrap; }
+      .case-video { max-height: 56vh; }
+      /* Stram stats saa alle 3 (inkl. virtuel merch) altid er med i frame - ogsaa naar vinduet er lavt */
+      .case-fakta { gap: clamp(1rem, 2.2vh, 1.7rem); }
+      .case-tal { font-size: clamp(2.1rem, 3.4vw, 3.2rem); }
+      .case-stat-label { margin-bottom: 0.3rem; }
+      .case-beskrivelse { margin-top: 0.45rem; font-size: 0.92rem; }
+      /* Resten af sektionerne fylder ogsaa én skaerm og laaser */
+      .verden, .hvem, .ydelser, .cta {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        scroll-snap-stop: always;
+        padding-top: clamp(3rem, 7vh, 5rem);
+        padding-bottom: clamp(3rem, 7vh, 5rem);
+      }
+      .verden > .inner, .hvem > .inner, .ydelser > .inner, .cta > .inner { width: 100%; }
+    }
+
+    /* ---------- RESPONSIVT ---------- */
+    @media (max-width: 860px) {
+      .sektion-hoved { grid-template-columns: 1fr; align-items: start; }
+      /* .enlinje-titler skal wrappe paa mobil (ellers loeber de ud over kanten) */
+      .sektion-titel.enlinje { white-space: normal; }
+      /* Mobil: ren statisk liste (intet panel at klikke frem) - titel + tekst staar bare pænt.
+         Ingen knap-fornemmelse, saa man ikke forventer at der sker noget ved klik. */
+      .levering { grid-template-columns: 1fr; gap: 0; }
+      .levering-panel { display: none; }
+      .levering-punkt { font-size: 1.4rem; cursor: default; padding: 1.3rem 0; }
+      .levering-punkt, .levering-punkt.aktiv { color: var(--hvid); }
+      .levering-punkt:hover, .levering-punkt.aktiv { transform: none; }
+      .levering-mobil { display: block; font-size: 0.95rem; line-height: 1.5; color: var(--graa); font-weight: 400; letter-spacing: 0; margin-top: 0.55rem; }
+      .cta-titel { white-space: normal; }
+      .case-medie { grid-template-columns: 1fr; }
+      .case-video { max-width: 100%; }
+      /* Mobil: kort side-om-side, skaleret ned */
+      .duel-side, .datarap-felt { padding: clamp(1rem, 4vw, 1.5rem); border-radius: 14px; }
+      .duel-label { white-space: normal; font-size: 1rem; }
+      .duel-tal { font-size: clamp(1.6rem, 8vw, 2.6rem); }
+      .datarap { margin-top: clamp(0.7rem, 3vw, 1.1rem); }
+      .datarap-tal { font-size: clamp(1.5rem, 7vw, 2.3rem); }
+      .datarap-label { font-size: 0.8rem; }
+      /* Mobil-hero skal have RIGELIG scroll-plads, ellers fader den til sort naesten med det samme.
+         220vh giver et roligt scrub-forloeb foer overgangen til sort. */
+      .hero { height: 220vh; }
+      .hero-scrollhint { display: none; } /* mobil: videoen auto-starter + auto-scroller selv, saa ingen scroll-cue */
+      .levering-cue { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="#" class="nav-navn"><img class="logo-moerk" src="assets/logo-nav.png" alt="Julbu Studio"><img class="logo-lys" src="assets/logo-nav-lys.png" alt="Julbu Studio"></a>
+    <div class="nav-hoejre">
+      <a class="nav-linkedin" href="https://www.linkedin.com/company/julbu-studio" target="_blank" rel="noopener" aria-label="Julbu Studio på LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <button id="tema-knap" class="nav-tema aktiv" type="button" role="switch" aria-checked="true" aria-label="Nattilstand til/fra" title="Nattilstand til/fra"><span class="knop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span></button>
+      <a href="#kontakt" class="nav-kontakt" aria-label="Kontakt - hop til bunden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Kontakt</a>
+    </div>
+  </nav>
+
+  <!-- HERO: scroll-world scrub-engine mountes i #hero-world naar Higgsfield-assets er klar.
+       Jeppes beslutning: INGEN titel/tekst i hero - kun animationen. Navnet ligger i Hvem er vi-sektionen. -->
+  <header class="hero" id="hero">
+    <div class="hero-sticky">
+      <div id="hero-world">
+        <img class="hero-poster" src="hero/hero-poster.jpg" alt="">
+        <video id="hero-video" muted playsinline preload="auto"></video>
+        <div class="hero-fade" id="hero-fade"></div>
+        <!-- Statement fader smooth ind mens hero fader til sort (styret af hero-scroll). Intet under. -->
+        <div class="hero-statement" id="hero-statement">
+          <p class="statement-tekst" id="statement">Gen Z &amp; Alpha bruger mere tid på <span class="accent">Roblox</span> end på sociale medier.</p>
+        </div>
+      </div>
+      <div class="hero-scrollhint" id="hero-hint">
+        <svg class="hint-mus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="6"/><path d="M12 6.5v3.5"/></svg>
+        <span class="hint-tekst">Scroll</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- DATA -->
+  <section class="data">
+    <div class="inner">
+      <div class="data-blok">
+        <!-- "Hvorfor Roblox?" er centreret titel over de 4 bokse (beviserne). Glider ned paa plads. -->
+        <h2 class="data-statement reveal-ned">Hvorfor Roblox?</h2>
+        <p class="data-statement-under reveal-ned">Størstedelen er over 13 år</p>
+        <div class="duel">
+          <div class="duel-side vinder">
+            <div class="duel-tal">11+ min</div>
+            <p class="duel-label">Gennemsnitstid med et brand på <span class="mark-pos">Roblox</span></p>
+          </div>
+          <div class="duel-side taber">
+            <div class="duel-tal">1,3 sek</div>
+            <p class="duel-label">Gennemsnitstid på en <span class="mark-neg">SoMe-reklame</span></p>
+          </div>
+        </div>
+        <div class="datarap">
+          <div class="datarap-felt">
+            <span class="datarap-tal">150M+</span>
+            <span class="datarap-label">Daglige aktive Roblox-brugere <strong>globalt</strong></span>
+          </div>
+          <div class="datarap-felt">
+            <span class="datarap-tal">500.000+</span>
+            <span class="datarap-label">Ugentlige aktive Roblox-brugere i <strong>Danmark</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-blok">
+        <h3 class="dkdata-overskrift reveal">Danske børn</h3>
+        <div class="dkdata reveal">
+          <div class="dkdata-felt">
+            <div class="dkdata-tal">#1</div>
+            <p class="dkdata-label">Roblox er det mest spillede spil i alle skole-aldre - både piger og drenge</p>
+          </div>
+          <div class="dkdata-felt">
+            <div class="dkdata-tal">60%</div>
+            <p class="dkdata-label">af 9-11-årige spiller Roblox <strong>dagligt eller oftere</strong></p>
+          </div>
+          <div class="dkdata-felt">
+            <div class="dkdata-tal">98%</div>
+            <p class="dkdata-label">af danske børn 6-15 år spiller digitalt</p>
+          </div>
+        </div>
+        <p class="dkdata-kilde reveal">Kilde: DR, NIMBI & Medierådet for Børn og Unge, 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE -->
+  <section class="case" id="case">
+    <div class="inner">
+      <div class="case-hoved reveal">
+        <p class="sektion-etiket">Vores case</p>
+        <img class="case-logo" src="case/faarup-logo.png" alt="Fårup Sommerland" onerror="this.style.display='none'">
+        <h2 class="sektion-titel enlinje">Fårup Sommerland</h2>
+        <p class="sektion-tekst enlinje">Danmarks bedste forlystelsespark, genskabt som Roblox-oplevelse. Fra koncept til lancering.</p>
+      </div>
+
+      <!-- Trailer: case/trailer.mp4 (9:16) - autoplay uden lyd naar den scrolles ind -->
+      <div class="case-medie">
+        <div class="case-video reveal">
+          <video id="trailer" src="case/trailer.mp4" muted loop playsinline preload="metadata" hidden></video>
+          <div class="placeholder" id="trailer-placeholder">
+            <span class="placeholder-mark">Trailer</span>
+            <span>Fårup Sommerland-traileren indsættes her<br>(case/trailer.mp4)</span>
+          </div>
+        </div>
+
+        <div class="case-fakta">
+          <div class="reveal">
+            <p class="case-stat-label">Visits</p>
+            <div class="case-tal" data-taeller="500000" data-suffix="+">500.000+</div>
+            <p class="case-beskrivelse">Over <strong>500.000 besøg</strong> i spillet. Ikke visninger, ikke scroll-forbi - besøg, hvor spillere selv valgte at bruge tid i Fårups univers.</p>
+          </div>
+          <div class="reveal">
+            <p class="case-stat-label">Gennemsnitlig tid</p>
+            <div class="case-tal groen">9+ min</div>
+            <p class="case-beskrivelse">Per besøg i gennemsnit. <strong>Testet af på det danske marked.</strong> En oplevelse brugeren husker, i stedet for endnu en reklame.</p>
+          </div>
+          <div class="reveal">
+            <p class="case-stat-label">Virtuel merch</p>
+            <div class="case-tal hvid">3.500+</div>
+            <p class="case-beskrivelse">Virtuelle Fårup-merch-hatte, som spillere aktivt bruger på Roblox.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERNATIONALT -->
+  <section class="verden">
+    <div class="inner">
+      <div class="sektion-hoved reveal">
+        <h2 class="sektion-titel enlinje">De største brands er allerede i gang</h2>
+        <p class="sektion-tekst enlinje">Roblox er ikke et eksperiment længere. Det er en platform, verdens største brands allerede investerer i.</p>
+      </div>
+
+      <div class="brandbaand reveal" id="brandbaand" aria-label="Internationale brands på Roblox">
+        <div class="brandspor" id="brandspor">
+          <span>Nike</span><span>Gucci</span><span>Samsung</span><span>Walmart</span><span>Spotify</span><span>NFL</span><span>L'Oréal</span><span>Universal</span><span>H&amp;M</span><span>Netflix</span><span>McDonald's</span><span>F1</span><span>PSG</span><span>e.l.f.</span><span>The Weeknd</span><span>Charli XCX</span>
+        </div>
+      </div>
+      <p class="brand-note">Eksempler på brands aktive på Roblox-platformen</p>
+
+    </div>
+  </section>
+
+  <!-- HVEM ER VI: navnet + logoet bor her (flyttet fra hero - Jeppes beslutning) -->
+  <section class="hvem">
+    <div class="inner">
+      <h1 class="hvem-logo reveal"><img class="logo-moerk" src="assets/logo-transparent.png" alt="Julbu Studio"><img class="logo-lys" src="assets/logo-transparent-lys.png" alt="Julbu Studio"></h1>
+      <p class="hvem-tekst reveal">Vi bygger Roblox-oplevelser, der bringer brands ind i den verden, hvor <em>den næste generation faktisk er.</em></p>
+    </div>
+  </section>
+
+  <!-- YDELSER -->
+  <section class="ydelser" id="ydelser">
+    <div class="inner">
+      <div class="ydelser-hoved reveal">
+        <h2 class="sektion-titel">Det leverer vi</h2>
+        <p class="sektion-tekst enlinje">Fra idé til lancering - vi håndterer hele processen, så I kan fokusere på jeres brand.</p>
+      </div>
+
+      <div class="levering reveal">
+        <div class="levering-liste">
+          <div class="levering-cue" id="levering-cue" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="6"/><path d="M12 6.5v3.5"/></svg>
+            <span>Hold over for at læse</span>
+          </div>
+          <button type="button" class="levering-punkt aktiv" data-titel="Brands på Roblox" data-tekst="Skræddersyede Roblox-spil, der bringer jeres brand til live på en autentisk måde i en interaktiv verden. Koncept, game design, 3D, scripting og lancering.">Brands på Roblox<span class="levering-mobil">Skræddersyede Roblox-spil, der bringer jeres brand til live på en autentisk måde i en interaktiv verden.</span></button>
+          <button type="button" class="levering-punkt" data-titel="UGC og merchandise" data-tekst="Branded virtuelt tøj og items, som spillere køber og bærer. Design, modellering og lancering på UGC Marketplace.">UGC og merchandise<span class="levering-mobil">Branded virtuelt tøj og items, som spillere køber og bærer.</span></button>
+          <button type="button" class="levering-punkt" data-titel="Strategi og rådgivning" data-tekst="Ikke sikre på, om Roblox er det rigtige? Vi afdækker mulighederne: målgruppeanalyse, konkurrentoverblik og platform-onboarding.">Strategi og rådgivning<span class="levering-mobil">Vi afdækker mulighederne: målgruppe, konkurrenter og onboarding.</span></button>
+          <button type="button" class="levering-punkt" data-titel="Drift og events" data-tekst="Vi holder jeres oplevelse levende med nyt indhold, in-game events, sæsonkampagner og community management.">Drift og events<span class="levering-mobil">Nyt indhold, in-game events, sæsonkampagner og community.</span></button>
+        </div>
+        <div class="levering-panel">
+          <h3 class="levering-titel" id="levering-titel">Brands på Roblox</h3>
+          <p class="levering-tekst" id="levering-tekst">Skræddersyede Roblox-spil, der bringer jeres brand til live på en autentisk måde i en interaktiv verden. Koncept, game design, 3D, scripting og lancering.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="kontakt">
+    <div class="inner">
+      <h2 class="cta-titel reveal">Klar til at nå den næste generation?</h2>
+      <div class="foundere reveal">
+        <div class="fkort">
+          <img class="ffoto" src="assets/team/jeppe.jpg" alt="Jeppe Reinicke">
+          <div class="fnavn">Jeppe Reinicke</div>
+          <div class="ftitel">CEO &amp; Founder</div>
+          <div class="fkontakt"><a href="mailto:jeppe@julbustudio.com">jeppe@julbustudio.com</a><span class="ftlf">+45 24 46 27 44</span></div>
+          <a class="flinkedin" href="https://www.linkedin.com/in/jeppe-reinicke-28601924a/" target="_blank" rel="noopener" aria-label="Jeppe Reinicke på LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+        </div>
+        <div class="fkort">
+          <img class="ffoto" src="assets/team/frede.jpg" alt="Frede Dyrnesli">
+          <div class="fnavn">Frede Dyrnesli</div>
+          <div class="ftitel">Co-founder &amp; Head of Partnerships</div>
+          <div class="fkontakt"><a href="mailto:frede@julbustudio.com">frede@julbustudio.com</a><span class="ftlf">+45 30 66 65 07</span></div>
+          <a class="flinkedin" href="https://www.linkedin.com/in/frede-dyrnesli-8b588a240/" target="_blank" rel="noopener" aria-label="Frede Dyrnesli på LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+        </div>
+      </div>
+      <button type="button" class="cta-knap reveal" id="aabn-kontakt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Kontakt</button>
+    </div>
+  </section>
+
+  <!-- KONTAKT-MODAL: aabner naar man klikker "Skriv til os" - simpel mail-form i Julbu-stil -->
+  <div class="modal-baggrund" id="kontakt-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titel">
+      <button type="button" class="modal-luk" id="modal-luk" aria-label="Luk">&times;</button>
+      <h3 class="modal-titel" id="modal-titel">Skriv til os</h3>
+      <p class="modal-under">Fortæl os kort om din idé, så vender vi tilbage hurtigt.</p>
+      <form id="kontakt-form">
+        <input type="hidden" name="access_key" value="13dd45af-2962-47b4-82b6-ebaa52fb9f82">
+        <input type="hidden" name="subject" value="Ny henvendelse fra julbustudio.com">
+        <input type="hidden" name="cc" value="frede@julbustudio.com">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+        <label class="felt"><span>Navn</span><input type="text" name="navn" required></label>
+        <label class="felt"><span>Email</span><input type="email" name="email" required></label>
+        <label class="felt"><span>Emne</span><input type="text" name="emne" required></label>
+        <label class="felt"><span>Besked</span><textarea name="besked" rows="5" required></textarea></label>
+        <button type="submit" class="modal-send">Send</button>
+        <p class="modal-status" id="modal-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Start i toppen ved (gen)indlaesning - browseren maa ikke lande midt i hero-scrubben
+    addEventListener('load', () => window.scrollTo(0, 0));
+
+    // Nav-baggrund ved scroll
+    const nav = document.getElementById('nav');
+    addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 24), { passive: true });
+
+    // Logo i nav -> scroll pænt til toppen (href="#" virkede ikke ordentligt med snap/scrub)
+    const navNavn = document.querySelector('.nav-navn');
+    if (navNavn) navNavn.addEventListener('click', e => {
+      e.preventDefault();
+      // Slaa snap fra under rejsen (ellers kaprer mandatory-snap den smooth scroll)
+      window.__gaaTilTop = true;
+      document.documentElement.style.scrollSnapType = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const tjek = () => {
+        if (window.scrollY <= 2) { window.__gaaTilTop = false; }
+        else requestAnimationFrame(tjek);
+      };
+      requestAnimationFrame(tjek);
+    });
+
+    // Kontakt-knap i nav -> scroll pænt ned til kontakt-sektionen (snap maa ikke kapre rejsen)
+    const navKontakt = document.querySelector('.nav-kontakt');
+    const kontaktSek = document.getElementById('kontakt');
+    if (navKontakt && kontaktSek) navKontakt.addEventListener('click', e => {
+      e.preventDefault();
+      window.__navigerer = true;
+      document.documentElement.style.scrollSnapType = 'none';
+      const maalY = kontaktSek.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: maalY, behavior: 'smooth' });
+      const tjek = () => {
+        if (Math.abs(window.scrollY - maalY) <= 4) { window.__navigerer = false; }
+        else requestAnimationFrame(tjek);
+      };
+      setTimeout(() => { window.__navigerer = false; }, 1500); // sikkerhedsnet
+      requestAnimationFrame(tjek);
+    });
+
+    // Kontakt-modal: "Skriv til os" aabner pop-up-formen. Sender via Web3Forms (gratis form-service).
+    (() => {
+      const modal = document.getElementById('kontakt-modal');
+      const aabnKnap = document.getElementById('aabn-kontakt');
+      const lukKnap = document.getElementById('modal-luk');
+      const form = document.getElementById('kontakt-form');
+      const status = document.getElementById('modal-status');
+      if (!modal || !aabnKnap) return;
+      const aaben = () => { modal.hidden = false; requestAnimationFrame(() => modal.classList.add('aaben')); const f = modal.querySelector('input[name="navn"]'); if (f) setTimeout(() => f.focus(), 250); };
+      const luk = () => { modal.classList.remove('aaben'); setTimeout(() => { modal.hidden = true; }, 500); }; // 500ms saa foldes-ned-animationen naar at spille faerdig (som naar den aabner)
+      aabnKnap.addEventListener('click', aaben);
+      lukKnap.addEventListener('click', luk);
+      modal.addEventListener('click', e => { if (e.target === modal) luk(); });
+      addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) luk(); });
+
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const sendKnap = form.querySelector('.modal-send');
+        status.textContent = 'Sender...';
+        sendKnap.disabled = true;
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) });
+          const json = await res.json();
+          if (json.success) {
+            status.textContent = 'Tak! Vi vender tilbage hurtigst muligt.';
+            form.reset();
+            setTimeout(luk, 10000); // bliv staaende 10 sek saa man naar at laese kvitteringen
+          } else {
+            status.textContent = 'Noget gik galt - skriv gerne direkte til jeppe@julbustudio.com';
+          }
+        } catch (err) {
+          status.textContent = 'Noget gik galt - skriv gerne direkte til jeppe@julbustudio.com';
+        }
+        sendKnap.disabled = false;
+      });
+    })();
+
+    // Lys/moerk tilstand (knappen i hoejre hjoerne). Moerk er standard
+    (() => {
+      const knap = document.getElementById('tema-knap');
+      const rod = document.documentElement;
+      try { if (localStorage.getItem('julbu-tema') === 'lys') rod.classList.add('lys'); } catch (e) {}
+      const opdater = () => {
+        const moerk = !rod.classList.contains('lys');
+        knap.classList.toggle('aktiv', moerk);
+        knap.setAttribute('aria-checked', moerk ? 'true' : 'false');
+      };
+      knap.addEventListener('click', () => {
+        rod.classList.toggle('lys');
+        try { localStorage.setItem('julbu-tema', rod.classList.contains('lys') ? 'lys' : 'moerk'); } catch (e) {}
+        opdater();
+      });
+      opdater();
+    })();
+
+    // Scroll-scrubbet hero: scroll-position styrer videoens currentTime (ingen autoplay)
+    (function () {
+      const hero = document.getElementById('hero');
+      const video = document.getElementById('hero-video');
+      const fade = document.getElementById('hero-fade');
+      const hint = document.getElementById('hero-hint');
+      const heroStatement = document.getElementById('hero-statement');
+      const rod = document.documentElement;
+      if (!hero || !video) return;
+
+      // Statement: split i ord til scroll-styret farve-reveal (ordene lyser op ét ad gangen)
+      const stTekst = document.getElementById('statement');
+      const dele = [];
+      for (const node of [...stTekst.childNodes]) {
+        if (node.nodeType === 3) dele.push(...node.textContent.split(/\s+/).filter(Boolean).map(o => ({ tekst: o, accent: false })));
+        else if (node.nodeType === 1) dele.push({ tekst: node.textContent.trim(), accent: true });
+      }
+      stTekst.innerHTML = dele.map(d => `<span class="ord${d.accent ? ' accent' : ''}">${d.tekst}</span>`).join(' ');
+      const ord = [...stTekst.querySelectorAll('.ord')];
+
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // Posteren staar alene, statement fuldt synlig, nav synlig
+        heroStatement.style.opacity = '1';
+        ord.forEach(o => o.classList.add('synlig'));
+        return;
+      }
+      nav.classList.add('nav-skjult');
+
+      // Efter 2 sek: hintet glider ind i midten + vokser (mus + "Scroll", kun hvis der ikke er scrollet endnu)
+      if (hint) {
+        setTimeout(() => {
+          if (window.scrollY < 40) {
+            hint.classList.add('stor');
+          }
+        }, 2000);
+      }
+
+      // Mobil faar en 9:16-reframet version (portraet), saa videoen ikke beskaeres grimt.
+      // Falder tilbage til landscape-versionen hvis mobil-filen ikke findes.
+      const mobil = matchMedia('(max-width: 860px)').matches;
+      if (mobil) { const poster = document.querySelector('.hero-poster'); if (poster) poster.src = 'hero/hero-poster-mobil.jpg'; }
+      const src = mobil ? 'hero/hero-scrub-mobil.mp4' : 'hero/hero-scrub.mp4';
+      const fallback = 'hero/hero-scrub.mp4';
+      // Blob goer scrubbing altid seekbar; hvis mobil-filen mangler bruges landscape;
+      // ved file:// (ingen fetch) saettes src direkte.
+      fetch(src).then(r => r.ok ? r.blob() : Promise.reject())
+        .then(b => { video.src = URL.createObjectURL(b); })
+        .catch(() => {
+          if (src !== fallback) {
+            fetch(fallback).then(r => r.ok ? r.blob() : Promise.reject())
+              .then(b => { video.src = URL.createObjectURL(b); })
+              .catch(() => { video.src = fallback; });
+          } else {
+            video.src = src;
+          }
+        });
+
+      // LÅST SCROLL kun paa desktop - mobil skal scrolle helt frit (ellers fucker snap med touch/adressebar)
+      const kanLaase = matchMedia('(min-width: 861px)');
+      // INGEN JS scroll-manipulation mere (overflow/scrollTo forstyrrede den sticky hero -> sort glimt).
+      // I stedet: farve-reveal'en er faerdig FOER snap-zonen, og native scroll-snap fanger statementet.
+      // Statementet er sticky (staar bomstille i viewporten), saa snap flytter kun scroll'en - intet glimter.
+
+      let dur = 0, cur = 0, target = 0, vist = false;
+      video.addEventListener('loadedmetadata', () => { dur = video.duration; });
+      video.addEventListener('seeked', () => {
+        if (!vist) { video.classList.add('klar'); vist = true; }
+      });
+
+      function laes() {
+        const total = hero.offsetHeight - innerHeight;
+        const p = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / total));
+        target = p;
+        // Fade + statement + ord-reveal - alt FAERDIGT ved p~0.85, saa snap-zonen (0.88+) aldrig afbryder animationen
+        fade.style.opacity = Math.min(1, Math.max(0, (p - 0.70) / 0.10)).toFixed(3);          // sort faerdig ~0.80
+        heroStatement.style.opacity = Math.min(1, Math.max(0, (p - 0.72) / 0.06)).toFixed(3);  // synlig ~0.78
+        const op = Math.min(1, Math.max(0, (p - 0.73) / 0.12));                                // ord faerdig-farvede ~0.85
+        const antal = Math.round(op * ord.length);
+        ord.forEach((o, i) => o.classList.toggle('synlig', i < antal));
+        // Nav kommer ind naar statementet er paa plads
+        nav.classList.toggle('nav-skjult', p < 0.92);
+        if (hint) hint.style.opacity = p > 0.04 ? '0' : '1';
+        // LÅST SCROLL (kun desktop): fri scrub indtil p=0.88, SAA slaas mandatory snap til ->
+        // hero'ens snap-align:end + snap-stop:always fanger dig paa det faerdige statement.
+        // Statementet er sticky (staar bomstille), saa snap flytter kun scroll'en - INTET glimter/flytter sig.
+        if (window.__gaaTilTop || window.__navigerer) {
+          rod.style.scrollSnapType = 'none';        // programmatisk scroll koerer uden snap
+        } else if (kanLaase.matches) {
+          rod.style.scrollSnapType = p >= 0.88 ? 'y mandatory' : 'none';
+        } else {
+          rod.style.scrollSnapType = '';
+        }
+      }
+      addEventListener('scroll', laes, { passive: true });
+      addEventListener('resize', laes);
+
+      (function tick() {
+        laes();
+        // Scrub (video-tid styret af scroll) KUN paa desktop - mobil kan ikke seeke paalideligt
+        if (dur && !mobil) {
+          cur += (target - cur) * 0.16;
+          if (Math.abs(target - cur) < 0.0004) cur = target;
+          if (!video.seeking) {
+            try { video.currentTime = Math.min(dur - 0.05, cur * dur); } catch (e) {}
+          }
+        }
+        requestAnimationFrame(tick);
+      })();
+
+      if (mobil) {
+        // Mobil: afspil videoen ÉN gang (~50% hurtigere). Naar den slutter GLIDER vi bloedt ned
+        // til statementet (samme fade som naar man scroller). Scroller man op igen -> start forfra.
+        video.muted = true;
+        const spil = () => { video.playbackRate = 1.5; video.play().then(() => video.classList.add('klar')).catch(() => {}); }; // ~50% hurtigere (33% + 10% oveni)
+        video.addEventListener('canplay', spil, { once: true });
+        video.addEventListener('playing', () => video.classList.add('klar'));
+        // Fallback hvis autoplay blokeres (fx iOS lav-stroem): start ved foerste beroering
+        const spilVedTouch = () => { spil(); removeEventListener('touchstart', spilVedTouch); };
+        addEventListener('touchstart', spilVedTouch, { passive: true });
+        spil();
+
+        // Bloed animeret scroll (rAF). laes() koerer hvert frame og driver fade+statement gradvist,
+        // saa overgangen bliver PRAECIS som at scrolle. easeOUT = bevaegelsen starter STRAKS
+        // (ingen doed slow-start-pause), decelererer mod statementet.
+        let glider = false, forladt = false;
+        function glidTil(til, ms) {
+          glider = true;
+          const forrige = rod.style.scrollBehavior;
+          rod.style.scrollBehavior = 'auto'; // ellers fighter html{scroll-behavior:smooth} vores per-frame scroll -> hakker/staller
+          const start = window.scrollY, d = til - start, t0 = performance.now();
+          (function step(t) {
+            const k = Math.min(1, (t - t0) / ms);
+            const e = 1 - Math.pow(1 - k, 3); // easeOutCubic - straks igang
+            window.scrollTo(0, start + d * e);
+            if (k < 1) requestAnimationFrame(step);
+            else { glider = false; rod.style.scrollBehavior = forrige; }
+          })(performance.now());
+        }
+
+        // START faden FOER videoen er helt slut (mens den stadig spiller) -> ingen sort pause;
+        // det fader ind mens billedet stadig bevaeger sig, praecis som at scrolle.
+        let glidStartet = false;
+        function startGlid(ms) {
+          const slut = hero.offsetHeight - innerHeight;
+          // Bail KUN hvis man allerede selv er godt paa vej mod statementet (>70%). Vigtigt: efter en
+          // REPLAY staar man typisk et stykke nede i video-zonen (ikke y=0), saa den gamle "scrollY>40"
+          // blokerede auto-glide paa gentagne visninger (virkede kun ved refresh/foerste gang).
+          if (glidStartet || window.scrollY > slut * 0.7) return;
+          glidStartet = true;
+          forladt = true; // vi forlader videoen -> naeste gang man er tilbage i videoen, start forfra
+          glidTil(slut, ms);
+        }
+        video.addEventListener('timeupdate', () => {
+          if (!video.duration) return;
+          // Speed 20% op efter halvdelen (1,5x -> 1,8x), saa den ikke foeles for lang naar man ikke scroller
+          const oensket = video.currentTime >= video.duration * 0.5 ? 1.8 : 1.5;
+          if (Math.abs(video.playbackRate - oensket) > 0.01) video.playbackRate = oensket;
+          if (video.currentTime >= video.duration - 1.3) startGlid(1500);
+        });
+        video.addEventListener('ended', () => startGlid(700)); // fallback hvis timeupdate misser slutningen
+
+        // Scroll-styring paa mobil (RETNINGSBESTEMT, saa de to ting ikke slaas mod hinanden):
+        //  - Scroller man NED under videoen (keder sig, vil videre) -> glid HURTIGT til statementet.
+        //  - Scroller man OP tilbage i video-zonen -> spol til start + afspil forfra. Sker saa snart
+        //    man er tilbage OPPE i videoen (behoever IKKE helt til toppen som foer).
+        let sidsteY = window.scrollY;
+        addEventListener('scroll', () => {
+          if (glider) return; // ignorér vores egen glide
+          const y = window.scrollY, slut = hero.offsetHeight - innerHeight;
+          const ned = y > sidsteY; sidsteY = y;
+          if (y > slut * 0.82) forladt = true; // nede ved statementet -> armeret til restart
+          // OP tilbage i videoen efter at have forladt -> restart forfra
+          if (!ned && forladt && y < slut * 0.65) {
+            forladt = false; glidStartet = false;
+            try { video.currentTime = 0; } catch (e) {}
+            spil();
+            return;
+          }
+          // NED under videoen (vil videre) -> glid til statementet
+          if (ned && !glidStartet && !forladt && y > 70 && y < slut - 40) {
+            glidStartet = true; forladt = true;
+            glidTil(slut, 600);
+          }
+        }, { passive: true });
+      } else {
+        // Desktop iOS-agtig prime: mal et frame saa scrub'en ikke er sort ved start
+        const prime = () => {
+          video.play().then(() => video.pause()).catch(() => {});
+          removeEventListener('touchstart', prime);
+        };
+        addEventListener('touchstart', prime, { passive: true });
+      }
+    })();
+
+    // Reveal
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add('synlig'); io.unobserve(e.target); }
+    }, { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('.reveal, .reveal-ned').forEach(el => io.observe(el));
+
+    // POP-UP (v7): tilfoej pop-vis til data-blokken med boksene naar den kommer i syne,
+    // saa de 4 bokse smooth kommer ind fra hver deres hjoerne.
+    (() => {
+      const blok = document.querySelector('.data-blok');
+      if (!blok) return;
+      // Toggle (ikke unobserve): boksene popper IND hver gang blokken kommer i syne, og
+      // popper UD (tilbage i hjoernerne) naar man forlader den - mere liv paa siden.
+      const pio = new IntersectionObserver(entries => {
+        for (const e of entries) e.target.classList.toggle('pop-vis', e.isIntersecting);
+      }, { threshold: 0.25 });
+      pio.observe(blok);
+    })();
+
+    // Det leverer vi: hover/klik lyser punktet op og skifter panelet til hoejre
+    (() => {
+      const punkter = [...document.querySelectorAll('.levering-punkt')];
+      const titel = document.getElementById('levering-titel');
+      const tekst = document.getElementById('levering-tekst');
+      if (!punkter.length || !titel) return;
+      const vaelg = (p) => {
+        punkter.forEach(x => x.classList.toggle('aktiv', x === p));
+        titel.textContent = p.dataset.titel;
+        tekst.textContent = p.dataset.tekst;
+      };
+      punkter.forEach(p => {
+        p.addEventListener('mouseenter', () => vaelg(p));
+        p.addEventListener('focus', () => vaelg(p));
+        p.addEventListener('click', () => vaelg(p));
+      });
+
+      // "Hold for at laese"-cue: forsvinder foerste gang man hover/klikker et punkt,
+      // saa 40+ forstaar at der ER noget at interagere med (i stedet for bare at scrolle forbi)
+      const cue = document.getElementById('levering-cue');
+      const skjulCue = () => { if (cue) cue.classList.add('vaek'); };
+      if (cue) {
+        punkter.forEach(p => {
+          p.addEventListener('mouseenter', skjulCue, { once: true });
+          p.addEventListener('click', skjulCue, { once: true });
+          p.addEventListener('focus', skjulCue, { once: true });
+        });
+      }
+
+      // Auto-demo (desktop): naar sektionen kommer i syne koerer den ÉN gang igennem punkterne,
+      // saa man SER panelet skifte = tydeligt at listen er interaktiv. Stopper hvis man selv hover.
+      if (matchMedia('(min-width: 861px)').matches) {
+        let brugerRoerte = false;
+        const markerRoert = () => { brugerRoerte = true; };
+        punkter.forEach(p => p.addEventListener('mouseenter', markerRoert, { once: true }));
+        const demoIo = new IntersectionObserver(entries => {
+          if (!entries[0].isIntersecting) return;
+          demoIo.disconnect();
+          let i = 0;
+          const step = () => {
+            if (brugerRoerte) return;                 // brugeren tog over - stop demoen
+            vaelg(punkter[i]);
+            i++;
+            if (i < punkter.length) setTimeout(step, 720);
+            else setTimeout(() => { if (!brugerRoerte) vaelg(punkter[0]); }, 720);
+          };
+          setTimeout(step, 500);
+        }, { threshold: 0.5 });
+        const levSektion = document.querySelector('.levering');
+        if (levSektion) demoIo.observe(levSektion);
+      }
+    })();
+
+    // Statement-reveal styres nu af hero-scrubberen ovenfor (overlay i hero)
+
+    // Trailer: vis video hvis filen findes, autoplay (uden lyd) naar den er i viewport
+    const trailer = document.getElementById('trailer');
+    let trailerVist = false;
+    function visTrailer() {
+      if (trailerVist) return;
+      trailerVist = true;
+      trailer.hidden = false;
+      document.getElementById('trailer-placeholder').style.display = 'none';
+      const spilIo = new IntersectionObserver(entries => {
+        for (const e of entries) {
+          if (e.isIntersecting) trailer.play().catch(() => {});
+          else trailer.pause();
+        }
+      }, { threshold: 0.35 });
+      spilIo.observe(trailer);
+    }
+    trailer.addEventListener('loadedmetadata', visTrailer);
+    // Metadata kan allerede vaere loadet foer denne listener saettes paa (preload="metadata"
+    // paa en lokal fil) - saa fyrer eventet aldrig igen. Tjek readyState og vis med det samme.
+    if (trailer.readyState >= 1) visTrailer();
+    trailer.addEventListener('error', () => { if (!trailerVist) trailer.hidden = true; });
+
+    // Brand-marquee: ren CSS-animation. JS duplikerer bare indholdet én gang, saa
+    // translateX(-50%) looper soemloest. (scrollLeft-varianten scrollede ikke paa mobil.)
+    (() => {
+      const spor = document.getElementById('brandspor');
+      if (spor) spor.innerHTML += spor.innerHTML;
+    })();
+
+    // Case-tal taeller op naar det bliver synligt
+    const tal = document.querySelector('[data-taeller]');
+    const talIo = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      talIo.disconnect();
+      const maal = +tal.dataset.taeller, suffix = tal.dataset.suffix || '';
+      const start = performance.now(), varighed = 1400;
+      const fmt = n => n.toLocaleString('da-DK');
+      const tick = t => {
+        const p = Math.min(1, (t - start) / varighed);
+        const e = 1 - Math.pow(1 - p, 3);
+        tal.textContent = fmt(Math.round(maal * e)) + (p === 1 ? suffix : '');
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.6 });
+    talIo.observe(tal);
+  </script>
+  <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "80dbb0d494bc4769b75904c21020ba39"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
