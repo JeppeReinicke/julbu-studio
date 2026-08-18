@@ -32,6 +32,8 @@
       --blaa-tekst: #7B93D6;
       --groen: #5FBE8C;
       --roed: #E8756C;
+      --pige: #F0A6C8;
+      --dreng: #4F72C4;
       --font: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
       --pad: clamp(1.25rem, 5vw, 5rem);
       --maxw: 1400px;
@@ -162,6 +164,8 @@
       --blaa-tekst: #3563C4;
       --groen: #2E9E5B;
       --roed: #C8483E;
+      --pige: #C2568C;
+      --dreng: #3F5FAF;
     }
     html.lys nav.scrolled { background: rgba(233, 239, 247, 0.85); }
 
@@ -544,6 +548,19 @@
     }
     .case-tal.groen { color: var(--groen); }
     .case-tal.hvid { color: var(--hvid); }
+    .case-koen { display: flex; align-items: center; gap: 1.1rem; }
+    .case-lagkage { width: clamp(3.2rem, 6vw, 4.6rem); height: auto; flex: none; }
+    .case-koen-liste { display: flex; flex-direction: column; gap: 0.5rem; }
+    .case-koen-r { display: flex; align-items: baseline; gap: 0.5rem; font-size: 0.95rem; color: var(--graa); }
+    .case-koen-r b {
+      font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .case-koen-r .pige { color: var(--pige); }
+    .case-koen-r .dreng { color: var(--dreng); }
     .case-beskrivelse { margin-top: 0.7rem; font-size: 0.95rem; color: var(--graa); max-width: 44ch; }
     .case-beskrivelse strong { color: var(--hvid); font-weight: 600; }
 
@@ -948,6 +965,20 @@
             <p class="case-stat-label">Gennemsnitlig tid</p>
             <div class="case-tal groen">13,7 min</div>
             <p class="case-beskrivelse">Pr. spiller i gennemsnit.</p>
+          </div>
+          <div class="reveal">
+            <p class="case-stat-label">Køn</p>
+            <div class="case-koen">
+              <svg class="case-lagkage" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="22.5" fill="none" stroke-width="45" transform="rotate(-90 50 50)" stroke="var(--pige)" stroke-dasharray="76.3 141.4"/>
+                <circle cx="50" cy="50" r="22.5" fill="none" stroke-width="45" transform="rotate(-90 50 50)" stroke="var(--dreng)" stroke-dasharray="65.1 141.4" stroke-dashoffset="-76.3"/>
+              </svg>
+              <div class="case-koen-liste">
+                <div class="case-koen-r"><b class="pige">54%</b> piger</div>
+                <div class="case-koen-r"><b class="dreng">46%</b> drenge</div>
+              </div>
+            </div>
+            <p class="case-beskrivelse">Over halvdelen af spillerne var <strong>piger</strong>.</p>
           </div>
           <div class="reveal">
             <p class="case-stat-label">Virtuel merch</p>
