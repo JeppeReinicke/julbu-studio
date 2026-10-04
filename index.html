@@ -13,7 +13,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon-256.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -35,6 +35,7 @@
       --pige: #9DC4F5;
       --dreng: #4F72C4;
       --font: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-citat: 'Instrument Serif', Georgia, serif;
       --pad: clamp(1.25rem, 5vw, 5rem);
       --maxw: 1400px;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -563,6 +564,23 @@
     .case-koen-r .dreng { color: var(--dreng); }
     .case-beskrivelse { margin-top: 0.7rem; font-size: 0.95rem; color: var(--graa); max-width: 44ch; }
     .case-beskrivelse strong { color: var(--hvid); font-weight: 600; }
+    /* Kundecitat under casen. Teksten er ordret fra Testimonial-filen - ret den aldrig her. */
+    .case-citat { margin-top: clamp(2.5rem, 6vh, 4rem); max-width: 56rem; }
+    .case-citat blockquote {
+      font-family: var(--font-citat);
+      font-style: italic;
+      font-size: clamp(1.3rem, 2.1vw, 1.75rem);
+      line-height: 1.3;
+      color: var(--hvid);
+    }
+    .case-citat figcaption { margin-top: 0.7rem; font-size: 0.9rem; color: var(--graa); }
+    .case-citat-navn {
+      font-family: var(--font-citat);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--blaa-tekst);
+      margin-right: 0.6rem;
+    }
 
     /* ---------- INTERNATIONALT ---------- */
     .verden .sektion-hoved { display: block; }
@@ -806,6 +824,12 @@
       }
       .case-hoved { margin-bottom: clamp(1.2rem, 3vh, 2rem); }
       .case-hoved .sektion-tekst { white-space: nowrap; }
+      /* Citatet staar til hoejre for overskriften (under traileren er der ikke plads i 100vh).
+         Paa mobil falder det tilbage til sin plads i DOM'en: nederst i sektionen. */
+      .case .inner { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: center; column-gap: clamp(2rem, 5vw, 5rem); }
+      .case-medie { grid-column: 1 / -1; }
+      .case-citat { grid-column: 2; grid-row: 1; align-self: end; justify-self: end; max-width: 36rem; margin: 0 0 clamp(1.2rem, 3vh, 2rem); }
+      .case-citat blockquote { font-size: clamp(1.15rem, 1.6vw, 1.4rem); }
       .case-video { max-height: 56vh; }
       /* Stram stats saa alle 3 (inkl. virtuel merch) altid er med i frame - ogsaa naar vinduet er lavt */
       .case-fakta { gap: clamp(1rem, 2.2vh, 1.7rem); }
@@ -840,6 +864,7 @@
       .cta-titel { white-space: normal; }
       .case-medie { grid-template-columns: 1fr; }
       .case-video { max-width: 100%; }
+      .case-citat-navn { display: block; }
       /* Mobil: kort side-om-side, skaleret ned */
       .duel-side, .datarap-felt { padding: clamp(1rem, 4vw, 1.5rem); border-radius: 14px; }
       .duel-label { white-space: normal; font-size: 1rem; }
@@ -986,6 +1011,11 @@
           </div>
         </div>
       </div>
+
+      <figure class="case-citat reveal">
+        <blockquote>”Julbu Studio har været gode til at oversætte det tekniske og guide os til den rigtige kreative løsning. Stor anbefaling herfra.”</blockquote>
+        <figcaption><span class="case-citat-navn">Rasmus Mortensen</span>Kommerciel chef, Fårup Sommerland</figcaption>
+      </figure>
     </div>
   </section>
 
